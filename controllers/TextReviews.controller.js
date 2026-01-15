@@ -59,3 +59,25 @@ exports.deleteReview = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+/* ================= PUBLIC TEXT REVIEWS ================= */
+exports.getPublicReviews = async (req, res) => {
+  try {
+    const { domainName } = req.query;
+
+    if (!domainName) {
+      return res.status(400).json({ message: "domainName is required" });
+    }
+
+    const reviews = await TextReview.find({ domain: domainName }).sort({
+      createdAt: -1,
+    });
+
+    res.json({
+      success: true,
+      count: reviews.length,
+      data: reviews,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

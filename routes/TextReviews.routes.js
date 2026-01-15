@@ -5,15 +5,17 @@ const {
   addReview,
   getReviews,
   deleteReview,
+  getPublicReviews,
 } = require("../controllers/TextReviews.controller");
 
 const adminAuth = require("../middlewares/auth.middleware");
 
-// 🌍 PUBLIC
+// 🌍 PUBLIC (NO TOKEN)
 router.post("/", addReview);
+router.get("/", getPublicReviews);
 
-// 🔐 ADMIN
-router.get("/", adminAuth, getReviews);
-router.delete("/:id", adminAuth, deleteReview);
+// 🔐 ADMIN (TOKEN REQUIRED)
+router.get("/admin", adminAuth, getReviews);
+router.delete("/admin/:id", adminAuth, deleteReview);
 
 module.exports = router;

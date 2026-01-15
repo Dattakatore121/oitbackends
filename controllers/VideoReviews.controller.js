@@ -78,3 +78,26 @@ exports.deleteVideo = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+/* ================= GET PUBLIC VIDEOS ================= */
+// 🌍 FRONTEND (NO TOKEN)
+exports.getPublicVideos = async (req, res) => {
+  try {
+    const { domainName } = req.query;
+
+    if (!domainName) {
+      return res.status(400).json({ message: "domainName is required" });
+    }
+
+    const videos = await VideoReview.find({
+      domain: domainName,
+    }).sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      count: videos.length,
+      data: videos,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

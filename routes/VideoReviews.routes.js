@@ -5,13 +5,17 @@ const {
   addVideo,
   getVideos,
   deleteVideo,
+  getPublicVideos,
 } = require("../controllers/VideoReviews.controller");
 
 const authMiddleware = require("../middlewares/auth.middleware");
 
-// 🔐 ADMIN
-router.post("/", authMiddleware, addVideo);
-router.get("/", authMiddleware, getVideos);
-router.delete("/:id", authMiddleware, deleteVideo);
+// 🔐 ADMIN ROUTES (TOKEN REQUIRED)
+router.post("/admin", authMiddleware, addVideo);
+router.get("/admin", authMiddleware, getVideos);
+router.delete("/admin/:id", authMiddleware, deleteVideo);
+
+// 🌍 PUBLIC ROUTE (NO TOKEN)
+router.get("/", getPublicVideos);
 
 module.exports = router;
